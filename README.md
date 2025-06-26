@@ -3,6 +3,7 @@ A SwiftUI Native Chatting App for Chatting with the Gemini Models - built fully 
 
 ## Features
 - Chat with any Gemini Model Supported by the Gemini [Generative AI SDK](https://github.com/google-gemini/deprecated-generative-ai-swift)
+- Clean, modern and intuitive Native SwiftUI Interface
 - Add Custom Models not yet in the App directly when they release using the Custom Model Menu in Settings
 - Let the App automatically check which of the Models your API Key Supports
 - Switch Between Formal and Informal Response Mode
