@@ -51,7 +51,7 @@ struct GeminiPicker: View {
     @Binding var selection: GeminiModel
      @StateObject var modelStore = GeminiModelStore()
     var body: some View {
-        Menu("Model") {
+        Menu("Model", systemImage: "filemenu.and.selection") {
             Picker("Model", selection: $selection) {
                 ForEach(modelStore.models) { model in
                     Text(model.name)
