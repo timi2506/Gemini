@@ -18,7 +18,7 @@ let package = Package(
             targets: ["AppModule"],
             bundleIdentifier: "com.timi2506.Gemini",
             teamIdentifier: "P6PV2R9443",
-            displayVersion: "1.3.0",
+            displayVersion: "1.4.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .cloud),
             accentColor: .presetColor(.orange),
