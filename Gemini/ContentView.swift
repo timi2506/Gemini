@@ -24,119 +24,104 @@ struct ContentView: View {
     @State var showHistory = false
     var body: some View {
         VStack {
-            ScrollViewReader { proxy in
-                ScrollView {
-                    ForEach(chatSaves.messages) { messageItem in
-                        messageItem
-                    }
-                    if let wipResponse {
-                        Message(user: false, message: wipResponse)
-                    }
-                    Rectangle()
-                        .foregroundStyle(.clear)
-                        .frame(height: 10)
-                        .id("Bottom")
-                        .onChange(of: wipResponse) { _ in
-                            withAnimation() {
-                                proxy.scrollTo("Bottom")
-                            }
+            ZStack {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        Spacer()
+                            .frame(height: 125)
+                        ForEach(chatSaves.messages) { messageItem in
+                            messageItem
                         }
-                        .onChange(of: chatSaves.messages) {_ in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                        if let wipResponse {
+                            Message(user: false, message: wipResponse)
+                        }
+                        Spacer()
+                            .frame(height: 175)
+                            .id("Bottom")
+                            .onChange(of: wipResponse) {
                                 withAnimation() {
                                     proxy.scrollTo("Bottom")
                                 }
                             }
-                        }
-                }
-            }
-            .padding()
-            Spacer()
-            VStack {
-                DynamicHeightTextEditor("Message", text: $message)
-                    .scrollDismissesKeyboard(.immediately)
-                    .textEditorStyle(.plain)
-                    .padding(10)
-                HStack {
-                    Menu(content: {
-                        GeminiPicker(selection: $selectedModel)
-                        Button("Insert Code", systemImage: "text.redaction") {
-                            showCodeEditor.toggle()
-                        }
-                    }) {
-                        Image(systemName: "plus")
-                            .bold()
-                            .font(.system(size: 20))
-                            .padding(5)
-                            .foregroundStyle(Color(uiColor: .label))
+                            .onChange(of: chatSaves.messages) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    withAnimation() {
+                                        proxy.scrollTo("Bottom")
+                                    }
+                                }
+                            }
                     }
-                    Button(action: {
-                        formal.toggle()
-                    }) {
-                        HStack(spacing: 5) {
-                            Image(systemName: "eyeglasses")
-                            Text("Formal")
+                }
+                VStack {
+                    TextField("Message", text: $message, axis: .vertical)
+                        .lineLimit(3)
+                        .scrollDismissesKeyboard(.immediately)
+                        .textEditorStyle(.plain)
+                        .padding(10)
+                    HStack {
+                        Menu(content: {
+                            GeminiPicker(selection: $selectedModel)
+                            Button("Insert Code", systemImage: "text.redaction") {
+                                showCodeEditor.toggle()
+                            }
+                        }) {
+                            Image(systemName: "plus")
                                 .bold()
+                                .font(.system(size: 20))
+                                .padding(5)
                         }
-                        .padding(7.5)
-                        .foregroundStyle(formal ? Color.accentColor : Color(uiColor: .label))
-                        .background(
-                            RoundedRectangle(cornerRadius: 25)
-                                .foregroundStyle(formal ? .accentColor.opacity(0.25) : Color.gray.opacity(0.25))
-                        )
-                    }
-                    Spacer()
-                    AsyncButton(cancellationMessage: "This will stop Gemini from Generating the current Prompt, this cannot be undone", label: {
-                        Image(systemName: "arrow.up")
-                        .bold()
-                        .font(.system(size: 14))
-                    }) {
-                        var message: String = ""
-                        message = self.message
-                        generationStatus = .generating
-                        appendMessage(message, user: true)
-                        wipResponse = ""
-                        await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
-                        appendMessage(wipResponse ?? "Unknown Response", user: false)
-                        generationStatus = .ready
-                        if message == self.message {
-                            self.message = ""
+                        .menuStyle(.button)
+                        .buttonStyle(.plain)
+                        Button(action: {
+                            formal.toggle()
+                        }) {
+                            HStack(spacing: 5) {
+                                Image(systemName: "eyeglasses")
+                                Text("Formal")
+                                    .bold()
+                            }
+                            .padding(7.5)
+                            .foregroundStyle(formal ? Color.accentColor : Color(uiColor: .label))
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .foregroundStyle(formal ? .accentColor.opacity(0.25) : Color.gray.opacity(0.25))
+                            )
                         }
-                        wipResponse = nil
+                        .buttonStyle(.plain)
+                        Spacer()
+                        AsyncButton(cancellationMessage: "This will stop Gemini from Generating the current Prompt, this cannot be undone", label: {
+                            Image(systemName: "arrow.up")
+                            .bold()
+                            .font(.system(size: 14))
+                            .padding(7.5)
+                            .background(
+                                Circle().foregroundStyle(.tint)
+                            )
+                        }) {
+                            var message: String = ""
+                            message = self.message
+                            generationStatus = .generating
+                            appendMessage(message, user: true)
+                            wipResponse = ""
+                            await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
+                            appendMessage(wipResponse ?? "Unknown Response", user: false)
+                            generationStatus = .ready
+                            if message == self.message {
+                                self.message = ""
+                            }
+                            wipResponse = nil
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(generationStatus != .generating ? message.isEmpty : false)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.circle)
-//                    Button(action: {
-//                        switch generationStatus {
-//                        case .generating:
-//                            stopGenerating()
-//                        case .ready:
-//                            sendMessage()
-//                        case .error:
-//                            print("Nothing done")
-//                        }
-//                    }) {
-//                        let configuration = generationStatus.configuration
-//                        Image(systemName: configuration.imageName)
-//                            .bold()
-//                            .font(.system(size: 14))
-//                            .frame(width: 12.5, height: 12.5)
-//                            .foregroundStyle(Color(uiColor: .label))
-//                            .padding(7.5)
-//                            .background(
-//                                RoundedRectangle(cornerRadius: 25)
-//                                    .foregroundStyle(configuration.color)
-//                            )
-//                    }
-                    .disabled(generationStatus != .generating ? message.isEmpty : false)
                 }
+                .padding(10)
+                .thinBackground()
+                .padding(10)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .padding(.bottom)
             }
-            .padding(10)
-            .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .foregroundStyle(.ultraThinMaterial)
-            )
-            .padding(10)
+            .ignoresSafeArea(.container)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -224,16 +209,16 @@ struct ContentView: View {
         .sheet(isPresented: $showHistory) {
             ChatHistoryView()
         }
-        .onChange(of: selectedModel) { newModel in
+        .onChange(of: selectedModel) {
             model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
-            if let encoded = try? JSONEncoder().encode(newModel) {
+            if let encoded = try? JSONEncoder().encode(selectedModel) {
                 selectedModelData = encoded
             }
         }
-        .onChange(of: apiKey) { newModel in
+        .onChange(of: apiKey) {
             model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
         }
-        .onChange(of: chatSaves.messages) { _ in
+        .onChange(of: chatSaves.messages) {
             chatSaves.saveLatest()
         }
         .onAppear {
@@ -536,34 +521,6 @@ struct HistoryItem: Codable {
     let message: String
 }
 
-import SwiftUI
-
-struct DynamicHeightTextEditor: View {
-    let placeholder: String
-    @Binding var text: String
-    @FocusState var isSelected: Bool
-    init(_ placeholder: String = "", text: Binding<String>) {
-        self.placeholder = placeholder
-        self._text = text
-    }
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            let lineNumber = text.split(separator: "\n", omittingEmptySubsequences: false).count
-            let height = lineNumber == 0 ? 20 : lineNumber * Int(20)
-            if !isSelected && text.isEmpty {
-                Text(placeholder)
-                    .foregroundStyle(.gray)
-                    .padding(.leading, 5)
-            }
-            // The actual TextEditor
-            TextEditor(text: $text)
-                .font(.body)
-                .focused($isSelected)
-                .frame(height: height >= 100 ? 100 : CGFloat(height))
-        }
-    }
-}
-
 import UIKit
 
 /// Presents a basic “Inserting” alert with a spinning indicator.
@@ -609,4 +566,19 @@ struct TipStruct: Tip {
     var title: Text
     var message: Text?
     var image: Image?
+}
+
+extension View {
+    func thinBackground(_ shape: some Shape = RoundedRectangle(cornerRadius: 25)) -> some View {
+        if #available(iOS 26, *) {
+            return self
+                .glassEffect(in: shape)
+        } else {
+            return self
+                .background(
+                    shape
+                        .foregroundStyle(.ultraThinMaterial)
+                )
+        }
+    }
 }
