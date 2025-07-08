@@ -1,9 +1,10 @@
 {
+  "originHash" : "c12342a5df5a63f71c63618b208d352ea2ef14718a8071360e35d7d578a12c4b",
   "pins" : [
     {
       "identity" : "asyncbutton",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/timi2506/AsyncButton.git",
+      "location" : "https://github.com/timi2506/AsyncButton",
       "state" : {
         "revision" : "a57643336b2b3a507b46e39ed8623f853587a11b",
         "version" : "1.0.0"
@@ -12,7 +13,7 @@
     {
       "identity" : "codeeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ZeeZide/CodeEditor.git",
+      "location" : "https://github.com/ZeeZide/CodeEditor",
       "state" : {
         "revision" : "f5c076b94f4ceb05abff88ba91d75a8d57143f0c",
         "version" : "1.2.6"
@@ -21,7 +22,7 @@
     {
       "identity" : "generative-ai-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google-gemini/generative-ai-swift",
+      "location" : "https://github.com/google/generative-ai-swift",
       "state" : {
         "revision" : "44b8ce120425f9cf53ca756f3434ca2c2696f8bd",
         "version" : "0.5.6"
@@ -55,5 +56,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -184,6 +184,9 @@ struct SystemPromptManagerView: View {
 #Preview {
     SystemPromptManagerView()
 }
+
+import Combine
+
 class SystemPromptManager: ObservableObject {
     static let shared = SystemPromptManager()
     init() {
