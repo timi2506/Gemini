@@ -1,12 +1,18 @@
 import SwiftUI
 import AsyncButton
+import TipKit
 
 @main
 struct MyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(ChatSaves.shared)
+            NavigationStack {
+                ContentView()
+            }
+            .environmentObject(ChatSaves.shared)
+            .task {
+                try? Tips.configure()
+            }
         }
     }
 }

@@ -3,6 +3,8 @@ import GoogleGenerativeAI
 import MarkdownWebView
 import KeychainSwift
 import AsyncButton
+import TipKit
+
 struct ContentView: View {
     @AppStorage("Formal") var formal = false
     @State var message = ""
@@ -60,19 +62,6 @@ struct ContentView: View {
                         GeminiPicker(selection: $selectedModel)
                         Button("Insert Code", systemImage: "text.redaction") {
                             showCodeEditor.toggle()
-                        }
-                        ShareLink("Share Messages", item: shareMessages(chatSaves.messages))
-                            .disabled(chatSaves.messages.isEmpty)
-                        Button(action: { showHistory.toggle() }) {
-                            Label("History", systemImage: "clock")
-                        }
-                        Button("Clear Chat", systemImage: "xmark") {
-                            chatSaves.messages = []
-                            chatSaves.latestChatData = Data()
-                        }
-                        
-                        Button("Settings", systemImage: "gear") {
-                            settings.toggle()
                         }
                     }) {
                         Image(systemName: "plus")
@@ -148,6 +137,50 @@ struct ContentView: View {
                     .foregroundStyle(.ultraThinMaterial)
             )
             .padding(10)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu(content: {
+                        Button(action: { showHistory.toggle() }) {
+                            Label("History", systemImage: "clock")
+                        }
+                        Button("Clear Chat", systemImage: "xmark") {
+                            chatSaves.messages = []
+                            chatSaves.latestChatData = Data()
+                        }
+                    }) {
+                        Image(systemName: "clock")
+                    }
+                }
+                ToolbarItem(placement: .title) {
+                    Menu(content: {
+                        Button("Settings", systemImage: "gear") {
+                            settings.toggle()
+                        }
+                    }) {
+                        HStack {
+                            VStack(alignment: .center) {
+                                Text(selectedModel.name)
+                                    .bold()
+                                HStack(spacing: 2.5) {
+                                    Image(systemName: "chevron.down")
+                                    Text(selectedModel.id)
+                                }
+                                .font(.caption)
+                                .foregroundStyle(.gray)
+                                .bold()
+                            }
+                        }
+                    }
+                    .popoverTip(
+                        TipStruct(title: Text("Settings has moved"), message: Text("Settings is now found in the Title Menu"), image: Image(systemName: "gear"))
+                    )
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    ShareLink("Share Messages", item: shareMessages(chatSaves.messages))
+                        .disabled(chatSaves.messages.isEmpty)
+                }
+            }
         }
         .sheet(isPresented: $settings) {
             settingsView
@@ -570,4 +603,10 @@ func showInsertingAlert() -> UIAlertController? {
 func dismissInsertingAlert(_ alert: UIAlertController?, completion: (() -> Void)? = nil) {
     guard let alert = alert else { return }
     alert.dismiss(animated: true, completion: completion)
+}
+
+struct TipStruct: Tip {
+    var title: Text
+    var message: Text?
+    var image: Image?
 }
