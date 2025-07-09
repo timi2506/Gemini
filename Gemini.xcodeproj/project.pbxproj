@@ -12,28 +12,16 @@
 		8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D01030D2E1D058D003BE02C /* KeychainSwift */; };
 		8D0103112E1D05C4003BE02C /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103102E1D05C4003BE02C /* CodeEditor */; };
 		8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103132E1D05D8003BE02C /* AsyncButton */; };
+		8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D38F0C82E1E76BC00E20122 /* MarkdownUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8D0102E22E1D03F1003BE02C /* Gemini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gemini.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8D0103052E1D04A0003BE02C /* Exceptions for "Gemini" folder in "Gemini" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 8D0102E12E1D03F1003BE02C /* Gemini */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8D0102E42E1D03F1003BE02C /* Gemini */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				8D0103052E1D04A0003BE02C /* Exceptions for "Gemini" folder in "Gemini" target */,
-			);
 			path = Gemini;
 			sourceTree = "<group>";
 		};
@@ -47,6 +35,7 @@
 				8D0103112E1D05C4003BE02C /* CodeEditor in Frameworks */,
 				8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */,
 				8D0103082E1D0563003BE02C /* GoogleGenerativeAI in Frameworks */,
+				8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */,
 				8D01030B2E1D0577003BE02C /* MarkdownWebView in Frameworks */,
 				8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */,
 			);
@@ -96,6 +85,7 @@
 				8D01030D2E1D058D003BE02C /* KeychainSwift */,
 				8D0103102E1D05C4003BE02C /* CodeEditor */,
 				8D0103132E1D05D8003BE02C /* AsyncButton */,
+				8D38F0C82E1E76BC00E20122 /* MarkdownUI */,
 			);
 			productName = Gemini;
 			productReference = 8D0102E22E1D03F1003BE02C /* Gemini.app */;
@@ -131,6 +121,7 @@
 				8D01030C2E1D058D003BE02C /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				8D01030F2E1D05C4003BE02C /* XCRemoteSwiftPackageReference "CodeEditor" */,
 				8D0103122E1D05D8003BE02C /* XCRemoteSwiftPackageReference "AsyncButton" */,
+				8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D0102E32E1D03F1003BE02C /* Products */;
@@ -307,6 +298,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gemini/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -317,7 +309,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -354,6 +346,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Gemini/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -364,7 +357,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -442,6 +435,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -469,6 +470,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8D0103122E1D05D8003BE02C /* XCRemoteSwiftPackageReference "AsyncButton" */;
 			productName = AsyncButton;
+		};
+		8D38F0C82E1E76BC00E20122 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,9 +1,11 @@
 import SwiftUI
 import GoogleGenerativeAI
-import MarkdownWebView
+import MarkdownUI
 import KeychainSwift
 import AsyncButton
 import TipKit
+import FoundationModels
+import MarkdownWebView
 
 struct ContentView: View {
     @AppStorage("Formal") var formal = false
@@ -14,7 +16,7 @@ struct ContentView: View {
     @EnvironmentObject var chatSaves: ChatSaves
     @State var selectedModel: GeminiModel = GeminiModel(name: "Gemini 1.5 Flash", id: "gemini-1.5-flash")
     @AppStorage("aiModel") var selectedModelData: Data = Data()
-     @State var model = GenerativeModel(name: "gemini-1.5-flash", apiKey: "")
+    @State var model = GenerativeModel(name: "gemini-1.5-flash", apiKey: "")
     @KeychainText("apiKey", defaultValue: "") var apiKey: String
     @State var addKey = false
     @State var settings = false
@@ -22,6 +24,15 @@ struct ContentView: View {
     @State var showCodeEditor = false
     @State var code = ""
     @State var showHistory = false
+    var intelligenceAvailable: Bool {
+        if #available(iOS 26.0, *) {
+            return SystemLanguageModel.default.isAvailable
+        } else {
+            return false
+        }
+    }
+    @State var selectMessage: Message?
+    @State var selectSheetPlaintext = false
     var body: some View {
         VStack {
             ZStack {
@@ -29,14 +40,52 @@ struct ContentView: View {
                     ScrollView {
                         Spacer()
                             .frame(height: 125)
-                        ForEach(chatSaves.messages) { messageItem in
-                            messageItem
+                        VStack {
+                            ForEach(chatSaves.messages) { messageItem in
+                                messageItem
+                                    .contextMenu {
+                                        Button("Select Text", systemImage: "character.cursor.ibeam") {
+                                            selectMessage = messageItem
+                                        }
+                                        Button("Copy Text", systemImage: "document.on.clipboard") {
+                                            UIPasteboard.general.string = messageItem.message
+                                        }
+                                    }
+                            }
+                            
+                            if let wipResponse {
+                                Message(user: false, message: wipResponse)
+                            }
                         }
-                        if let wipResponse {
-                            Message(user: false, message: wipResponse)
+                        .padding(.horizontal)
+                        .sheet(item: $selectMessage) { message in
+                            NavigationStack {
+                                VStack {
+                                    Picker("Display Mode", selection: Binding(get: {
+                                        selectSheetPlaintext ? 1 : 0
+                                    }, set: {
+                                        selectSheetPlaintext = $0 == 1
+                                    })) {
+                                        Text("Markdown").tag(0)
+                                        Text("Plain Text").tag(1)
+                                    }
+                                    .pickerStyle(.segmented)
+                                    .padding()
+                                    VStack {
+                                        if selectSheetPlaintext {
+                                            TextEditor(text: .constant(message.message))
+                                        } else {
+                                            ScrollView {
+                                                MarkdownWebView(message.message)
+                                            }
+                                        }
+                                    }
+                                    .padding(.horizontal)
+                                }
+                            }
                         }
                         Spacer()
-                            .frame(height: 175)
+                            .frame(height: 150)
                             .id("Bottom")
                             .onChange(of: wipResponse) {
                                 withAnimation() {
@@ -91,25 +140,32 @@ struct ContentView: View {
                         Spacer()
                         AsyncButton(cancellationMessage: "This will stop Gemini from Generating the current Prompt, this cannot be undone", label: {
                             Image(systemName: "arrow.up")
-                            .bold()
-                            .font(.system(size: 14))
-                            .padding(7.5)
-                            .background(
-                                Circle().foregroundStyle(.tint)
-                            )
+                                .foregroundStyle(.white)
+                                .bold()
+                                .font(.system(size: 14))
+                                .padding(7.5)
+                                .background(
+                                    Circle().foregroundStyle(.tint)
+                                )
                         }) {
                             var message: String = ""
                             message = self.message
                             generationStatus = .generating
                             appendMessage(message, user: true)
                             wipResponse = ""
-                            await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
-                            appendMessage(wipResponse ?? "Unknown Response", user: false)
-                            generationStatus = .ready
-                            if message == self.message {
-                                self.message = ""
+                            if selectedModel.id == "apple-intelligence" {
+                                await streamIntelligenceResponse(for: generatePrompt(userPart: message), response: $wipResponse)
+                            } else {
+                                await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
                             }
-                            wipResponse = nil
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                appendMessage(wipResponse ?? "Unknown Response", user: false)
+                                wipResponse = nil
+                                generationStatus = .ready
+                                if message == self.message {
+                                    self.message = ""
+                                }
+                            }
                         }
                         .buttonStyle(.plain)
                         .disabled(generationStatus != .generating ? message.isEmpty : false)
@@ -175,67 +231,67 @@ struct ContentView: View {
                 .interactiveDismissDisabled(apiKey.isEmpty)
         }
         .sheet(isPresented: $showCodeEditor, onDismiss: { // early‑exit if empty
-               guard !code.isEmpty else { return }
-               
-               // 1) show HUD
-               let hudWindow = showInsertingAlert()
-               
-               // 2) fire off async work
-               Task {
-            var newText: String
-            do {
-                let response = try await model.generateContent(
-                    "You are part of an App, without any further comments take the following code, detect its language and put it in a markdown code block:\n\n\(code)"
-                )
-                newText = response.text ?? code
-            } catch {
-                newText = code
-            }
+            guard !code.isEmpty else { return }
             
-            // 3) once complete, update UI & dismiss
-            await MainActor.run {
-                message += "\n\n" + newText
-                dismissInsertingAlert(hudWindow) {
-                    
-                    code = ""
+            // 1) show HUD
+            let hudWindow = showInsertingAlert()
+            
+            // 2) fire off async work
+            Task {
+                var newText: String
+                do {
+                    let response = try await model.generateContent(
+                        "You are part of an App, without any further comments take the following code, detect its language and put it in a markdown code block:\n\n\(code)"
+                    )
+                    newText = response.text ?? code
+                } catch {
+                    newText = code
+                }
+                
+                // 3) once complete, update UI & dismiss
+                await MainActor.run {
+                    message += "\n\n" + newText
+                    dismissInsertingAlert(hudWindow) {
+                        
+                        code = ""
+                    }
+                }
+            }}) {
+                CodeEditorView(source: $code)
+                    .presentationDragIndicator(.visible)
+                    .presentationDetents([.medium, .large])
+                    .interactiveDismissDisabled(true)
+            }
+            .sheet(isPresented: $showHistory) {
+                ChatHistoryView()
+            }
+            .onChange(of: selectedModel) {
+                model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
+                if let encoded = try? JSONEncoder().encode(selectedModel) {
+                    selectedModelData = encoded
                 }
             }
-        }}) {
-            CodeEditorView(source: $code)
-                .presentationDragIndicator(.visible)
-                .presentationDetents([.medium, .large])
-                .interactiveDismissDisabled(true)
-        }
-        .sheet(isPresented: $showHistory) {
-            ChatHistoryView()
-        }
-        .onChange(of: selectedModel) {
-            model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
-            if let encoded = try? JSONEncoder().encode(selectedModel) {
-                selectedModelData = encoded
-            }
-        }
-        .onChange(of: apiKey) {
-            model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
-        }
-        .onChange(of: chatSaves.messages) {
-            chatSaves.saveLatest()
-        }
-        .onAppear {
-            if selectedModelData != Data() {
-                if let decoded = try? JSONDecoder().decode(GeminiModel.self, from: selectedModelData) {
-                    selectedModel = decoded
-                }
-            }
-            if chatSaves.latestChatData != Data() {
-                chatSaves.loadLatest()
-            }
-            if apiKey.isEmpty {
-                addKey = true
-            } else {
+            .onChange(of: apiKey) {
                 model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
             }
-        }
+            .onChange(of: chatSaves.messages) {
+                chatSaves.saveLatest()
+            }
+            .onAppear {
+                if selectedModelData != Data() {
+                    if let decoded = try? JSONDecoder().decode(GeminiModel.self, from: selectedModelData) {
+                        selectedModel = decoded
+                    }
+                }
+                if chatSaves.latestChatData != Data() {
+                    chatSaves.loadLatest()
+                }
+                if apiKey.isEmpty {
+                    addKey = true
+                } else {
+                    model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
+                }
+            }
     }
     @State var newModelName = ""
     @State var newModelID = ""
@@ -243,7 +299,7 @@ struct ContentView: View {
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     @StateObject var promptManager = SystemPromptManager.shared
-
+    
     var settingsView: some View {
         NavigationStack {
             VStack {
@@ -302,10 +358,10 @@ struct ContentView: View {
                             Form {
                                 TextField("New Models Name", text: $newModelName, onCommit: {
                                     newModelSuccess = false
-                                }) 
+                                })
                                 TextField("New Models ID", text: $newModelID, onCommit: {
                                     newModelSuccess = false
-                                }) 
+                                })
                                 Button("Test Model") {
                                     Task {
                                         do {
@@ -327,13 +383,13 @@ struct ContentView: View {
                                 modelStore.models.append(GeminiModel(name: newModelName, id: newModelID))
                             }) {
                                 Text("Add Model")
-                                .foregroundColor(.white)
-                                .font(.headline)
-                                .padding()
-                                .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                                .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                    .fill(Color.accentColor))
-                                .padding(.bottom)
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                                    .padding()
+                                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                                        .fill(Color.accentColor))
+                                    .padding(.bottom)
                             }
                             .disabled(!newModelSuccess)
                             .padding()
@@ -342,6 +398,12 @@ struct ContentView: View {
                     Button("Default Models") {
                         modelStore.resetModels()
                     }
+                    Button(intelligenceAvailable ? "Add Apple Intelligence Model" : "Apple Intelligence is not available on this device") {
+                        modelStore.models.append(
+                            GeminiModel(name: "Apple Intelligence", id: "apple-intelligence")
+                        )
+                    }
+                    .disabled(modelStore.models.contains(where: { $0.id == "apple-intelligence" }) || !intelligenceAvailable)
                 }
                 Section {
                     VStack(alignment: .leading) {
@@ -373,13 +435,19 @@ struct ContentView: View {
             generationStatus = .generating
             appendMessage(message, user: true)
             wipResponse = ""
-            await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
-            appendMessage(wipResponse ?? "Unknown Response", user: false)
-            generationStatus = .ready
-            if message == self.message {
-                self.message = ""
+            if selectedModel.id == "apple-intelligence" {
+                await streamIntelligenceResponse(for: generatePrompt(userPart: message), response: $wipResponse)
+            } else {
+                await streamResponse(for: generatePrompt(userPart: message), response: $wipResponse)
             }
-            wipResponse = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                appendMessage(wipResponse ?? "Unknown Response", user: false)
+                generationStatus = .ready
+                if message == self.message {
+                    self.message = ""
+                }
+                wipResponse = nil
+            }
         }
     }
     func streamResponse(for prompt: String, response: Binding<String?>) async {
@@ -395,6 +463,25 @@ struct ContentView: View {
                         }
                     }
                 }
+            }
+        } catch {
+            response.wrappedValue = error.localizedDescription
+        }
+    }
+    func streamIntelligenceResponse(for prompt: String, response: Binding<String?>) async {
+        do {
+            if #available(iOS 26.0, *) {
+                if intelligenceAvailable {
+                    for try await chunk in LanguageModelSession().streamResponse(to: prompt) {
+                        withAnimation() {
+                            response.wrappedValue = chunk
+                        }
+                    }
+                } else {
+                    response.wrappedValue = "Apple Intelligence is not available"
+                }
+            } else {
+                response.wrappedValue = "Apple Intelligence is only available on iOS 26 or higher on supported devices"
             }
         } catch {
             response.wrappedValue = error.localizedDescription
@@ -423,8 +510,10 @@ struct ContentView: View {
     func testAPIkey(key: String, results: Binding<[ModeltestResult]>, testing: Binding<Bool>) async {
         testing.wrappedValue = true
         for modelItem in modelStore.models {
-            let result = await streamTestResponse(key: key, model: modelItem)
-            results.wrappedValue.append(result)
+            if modelItem.id != "apple-intelligence" {
+                let result = await streamTestResponse(key: key, model: modelItem)
+                results.wrappedValue.append(result)
+            }
         }
         testing.wrappedValue = false
     }
@@ -490,20 +579,22 @@ func shareMessages(_ messages: [Message]) -> String {
 
 struct Message: View, Identifiable, Equatable, Codable {
     let id = UUID()
-    var user: Bool 
-     var message: String
+    var user: Bool
+    var message: String
     var body: some View {
         HStack {
             if user {
                 Spacer()
-                MarkdownWebView(message)
+                Markdown(message)
+                    .colorScheme(.dark)
+                    .foregroundStyle(.white)
                     .padding(7.5)
                     .background(
                         RoundedRectangle(cornerRadius: 15)
                             .foregroundStyle(Color.accentColor)
                     )
             } else {
-                MarkdownWebView(message)
+                Markdown(message)
                     .contentTransition(.numericText(countsDown: false))
                     .padding(7.5)
                     .background(

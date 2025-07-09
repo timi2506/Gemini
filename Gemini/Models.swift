@@ -4,6 +4,7 @@ import GoogleGenerativeAI
 import Foundation
 import Combine
 import AsyncButton 
+import FoundationModels
 
 class GeminiModelStore: ObservableObject {
     private let userDefaultsKey = "models"
@@ -25,15 +26,32 @@ class GeminiModelStore: ObservableObject {
             }
         }
     }
-    
+    var intelligenceAvailable: Bool {
+        if #available(iOS 26.0, *) {
+            return SystemLanguageModel.default.isAvailable
+        } else {
+            return false
+        }
+    }
     var defaultModels: [GeminiModel] {
-        [
-            GeminiModel(name: "Gemini 2.0 Flash", id: "gemini-2.0-flash"),
-            GeminiModel(name: "Gemini 2.0 Flash-Lite", id: "gemini-2.0-flash-lite"),
-            GeminiModel(name: "Gemini 1.5 Flash", id: "gemini-1.5-flash"),
-            GeminiModel(name: "Gemini 1.5 Flash-8B", id: "gemini-1.5-flash-8b"),
-            GeminiModel(name: "Gemini 1.5 Pro", id: "gemini-1.5-pro")
-        ]
+        if intelligenceAvailable {
+            [
+                GeminiModel(name: "Gemini 2.0 Flash", id: "gemini-2.0-flash"),
+                GeminiModel(name: "Gemini 2.0 Flash-Lite", id: "gemini-2.0-flash-lite"),
+                GeminiModel(name: "Gemini 1.5 Flash", id: "gemini-1.5-flash"),
+                GeminiModel(name: "Gemini 1.5 Flash-8B", id: "gemini-1.5-flash-8b"),
+                GeminiModel(name: "Gemini 1.5 Pro", id: "gemini-1.5-pro"),
+                GeminiModel(name: "Apple Intelligence", id: "apple-intelligence")
+            ]
+        } else {
+            [
+                GeminiModel(name: "Gemini 2.0 Flash", id: "gemini-2.0-flash"),
+                GeminiModel(name: "Gemini 2.0 Flash-Lite", id: "gemini-2.0-flash-lite"),
+                GeminiModel(name: "Gemini 1.5 Flash", id: "gemini-1.5-flash"),
+                GeminiModel(name: "Gemini 1.5 Flash-8B", id: "gemini-1.5-flash-8b"),
+                GeminiModel(name: "Gemini 1.5 Pro", id: "gemini-1.5-pro"),
+            ]
+        }
     }
     
     func resetModels() {
@@ -48,14 +66,28 @@ struct GeminiModel: Codable, Identifiable, Hashable {
 }
 
 struct GeminiPicker: View {
+    var intelligenceAvailable: Bool {
+        if #available(iOS 26.0, *) {
+            return SystemLanguageModel.default.isAvailable
+        } else {
+            return false
+        }
+    }
     @Binding var selection: GeminiModel
-     @StateObject var modelStore = GeminiModelStore()
+    @StateObject var modelStore = GeminiModelStore()
     var body: some View {
         Menu("Model", systemImage: "filemenu.and.selection") {
             Picker("Model", selection: $selection) {
                 ForEach(modelStore.models) { model in
-                    Text(model.name)
-                        .tag(model)
+                    if model.id == "apple-intelligence" {
+                        if intelligenceAvailable {
+                            Text(model.name)
+                                .tag(model)
+                        }
+                    } else {
+                        Text(model.name)
+                            .tag(model)
+                    }
                 }
             }
         }
@@ -74,12 +106,19 @@ enum ModeltestResultEnum: Codable {
 }
 
 struct AddKeyView: View {
+    var intelligenceAvailable: Bool {
+        if #available(iOS 26.0, *) {
+            return SystemLanguageModel.default.isAvailable
+        } else {
+            return false
+        }
+    }
     @State var testResults: [ModeltestResult] = []
     @State var testing = false
     @State var newApiKey = ""
-     @KeychainText("apiKey", defaultValue: "") var apiKey: String
+    @KeychainText("apiKey", defaultValue: "") var apiKey: String
     @State var noSuccesses = true
-     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
             VStack {
@@ -95,6 +134,13 @@ struct AddKeyView: View {
             .padding()
             Form {
                 TextField("API Key", text: $newApiKey)
+            }
+            if intelligenceAvailable {
+                Button("Skip for now") {
+                    dismiss.callAsFunction()
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(.tint)
             }
             NavigationLink(destination: {
                 Text("Validate your Key")
@@ -218,8 +264,10 @@ func testAPIkey(key: String, results: Binding<[ModeltestResult]>, testing: Bindi
      @StateObject var modelStore = GeminiModelStore()
     testing.wrappedValue = true
     for modelItem in modelStore.models {
-        let result = await streamTestResponse(key: key, model: modelItem)
-        results.wrappedValue.append(result)
+        if modelItem.id != "apple-intelligence" {
+            let result = await streamTestResponse(key: key, model: modelItem)
+            results.wrappedValue.append(result)
+        }
     }
     testing.wrappedValue = false
 }
