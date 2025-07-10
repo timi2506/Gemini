@@ -104,7 +104,7 @@ struct ContentView: View {
                 VStack {
                     TextField("Message", text: $message, axis: .vertical)
                         .lineLimit(3)
-                        .scrollDismissesKeyboard(.immediately)
+                        .scrollDismissesKeyboard(.interactively)
                         .textEditorStyle(.plain)
                         .padding(10)
                     HStack {
@@ -660,16 +660,16 @@ struct TipStruct: Tip {
 }
 
 extension View {
+    @ViewBuilder
     func thinBackground(_ shape: some Shape = RoundedRectangle(cornerRadius: 25)) -> some View {
         if #available(iOS 26, *) {
-            return self
-                .glassEffect(in: shape)
+            self.glassEffect(.regular, in: shape)
         } else {
-            return self
-                .background(
-                    shape
-                        .foregroundStyle(.ultraThinMaterial)
-                )
+            self.background(
+                shape
+                    .foregroundStyle(.ultraThinMaterial)
+            )
         }
     }
+
 }
