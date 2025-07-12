@@ -13,6 +13,7 @@
 		8D0103112E1D05C4003BE02C /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103102E1D05C4003BE02C /* CodeEditor */; };
 		8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103132E1D05D8003BE02C /* AsyncButton */; };
 		8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D38F0C82E1E76BC00E20122 /* MarkdownUI */; };
+		8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D9E841E2E2298A100CF39D1 /* NotchMyProblem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 				8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */,
 				8D0103082E1D0563003BE02C /* GoogleGenerativeAI in Frameworks */,
 				8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */,
+				8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */,
 				8D01030B2E1D0577003BE02C /* MarkdownWebView in Frameworks */,
 				8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */,
 			);
@@ -99,6 +101,7 @@
 				8D0103102E1D05C4003BE02C /* CodeEditor */,
 				8D0103132E1D05D8003BE02C /* AsyncButton */,
 				8D38F0C82E1E76BC00E20122 /* MarkdownUI */,
+				8D9E841E2E2298A100CF39D1 /* NotchMyProblem */,
 			);
 			productName = Gemini;
 			productReference = 8D0102E22E1D03F1003BE02C /* Gemini.app */;
@@ -135,6 +138,7 @@
 				8D01030F2E1D05C4003BE02C /* XCRemoteSwiftPackageReference "CodeEditor" */,
 				8D0103122E1D05D8003BE02C /* XCRemoteSwiftPackageReference "AsyncButton" */,
 				8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+				8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D0102E32E1D03F1003BE02C /* Products */;
@@ -291,7 +295,7 @@
 		8D0102EE2E1D03F3003BE02C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Gemini/Gemini.entitlements;
@@ -324,7 +328,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -341,7 +345,7 @@
 		8D0102EF2E1D03F3003BE02C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Gemini/Gemini.entitlements;
@@ -374,7 +378,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -460,6 +464,14 @@
 				minimumVersion = 2.4.1;
 			};
 		};
+		8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aeastr/NotchMyProblem";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -492,6 +504,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		8D9E841E2E2298A100CF39D1 /* NotchMyProblem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */;
+			productName = NotchMyProblem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

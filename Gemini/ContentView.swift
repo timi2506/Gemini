@@ -33,6 +33,11 @@ struct ContentView: View {
     }
     @State var selectMessage: Message?
     @State var selectSheetPlaintext = false
+    @FocusState var focused: Bool
+    @AppStorage("selectedWallpaper") var selectedWallpaperID: String = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
+    @StateObject var themeManager = ThemeManager.shared
+    @State var showThemePicker = false
+    
     var body: some View {
         VStack {
             ZStack {
@@ -103,13 +108,20 @@ struct ContentView: View {
                 }
                 VStack {
                     TextField("Message", text: $message, axis: .vertical)
-                        .lineLimit(3)
                         .scrollDismissesKeyboard(.interactively)
+                        .lineLimit(3)
                         .textEditorStyle(.plain)
+                        .focused($focused)
                         .padding(10)
+                        .toolbar {
+                            ToolbarItem(placement: .keyboard) {
+                                Button("Close Keyboard", systemImage: "keyboard.chevron.compact.down.fill") {
+                                    focused = false
+                                }
+                            }
+                        }
                     HStack {
                         Menu(content: {
-                            GeminiPicker(selection: $selectedModel)
                             Button("Insert Code", systemImage: "text.redaction") {
                                 showCodeEditor.toggle()
                             }
@@ -178,6 +190,22 @@ struct ContentView: View {
                 .padding(.bottom)
             }
             .ignoresSafeArea(.container)
+            .background {
+                if let currentWallpaperImage = themeManager.wallpapers.first(where: { $0.id == UUID(uuidString: selectedWallpaperID) })?.asyncImage(placeholder: {
+                    Color(uiColor: .systemBackground)
+                        .ignoresSafeArea(.all)
+                }, content: { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea(.all)
+                }) {
+                    currentWallpaperImage
+                } else {
+                    Color(uiColor: .systemBackground)
+                        .ignoresSafeArea(.all)
+                }
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -195,8 +223,12 @@ struct ContentView: View {
                 }
                 ToolbarItem(placement: .title) {
                     Menu(content: {
+                        GeminiPicker(selection: $selectedModel)
                         Button("Settings", systemImage: "gear") {
                             settings.toggle()
+                        }
+                        Button("Wallpaper", systemImage: "paintpalette") {
+                            showThemePicker = true
                         }
                     }) {
                         HStack {
@@ -208,13 +240,13 @@ struct ContentView: View {
                                     Text(selectedModel.id)
                                 }
                                 .font(.caption)
-                                .foregroundStyle(.gray)
+                                .foregroundStyle(.secondary)
                                 .bold()
                             }
                         }
                     }
                     .popoverTip(
-                        TipStruct(title: Text("Settings has moved"), message: Text("Settings is now found in the Title Menu"), image: Image(systemName: "gear"))
+                        TipStruct(title: Text("Settings has moved"), message: Text("Settings and the Model Picker are now found in the Title Menu"), image: Image(systemName: "gear"))
                     )
                 }
                 ToolbarItem(placement: .topBarTrailing) {
@@ -265,6 +297,10 @@ struct ContentView: View {
             .sheet(isPresented: $showHistory) {
                 ChatHistoryView()
             }
+            .fullScreenCover(isPresented: $showThemePicker) {
+                WallpaperPicker()
+                    .presentationBackground(.regularMaterial)
+            }
             .onChange(of: selectedModel) {
                 model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
                 if let encoded = try? JSONEncoder().encode(selectedModel) {
@@ -309,7 +345,7 @@ struct ContentView: View {
                     .bold()
                 Text("Configure Gemini the way you like!")
                     .fontDesign(.rounded)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
             .padding()
@@ -351,7 +387,7 @@ struct ContentView: View {
                                     .bold()
                                 Text("Add a Model yet not added to this App, the Model needs to be compatible with the Gemini iOS SDK")
                                     .fontDesign(.rounded)
-                                    .foregroundStyle(.gray)
+                                    .foregroundStyle(.secondary)
                                     .multilineTextAlignment(.center)
                             }
                             .padding()
@@ -413,6 +449,9 @@ struct ContentView: View {
                             .font(.caption)
                     }
                 }
+//                Section("Credits") {
+//                    uefuwefwefewf
+//                }
             }
         }
     }
@@ -472,7 +511,9 @@ struct ContentView: View {
         do {
             if #available(iOS 26.0, *) {
                 if intelligenceAvailable {
-                    for try await chunk in LanguageModelSession().streamResponse(to: prompt) {
+                    for try await chunk in LanguageModelSession(instructions: {
+                        prompt
+                    }).streamResponse(to: "Respond to the latest User Message as Described in the System Prompt.") {
                         withAnimation() {
                             response.wrappedValue = chunk
                         }
@@ -491,8 +532,8 @@ struct ContentView: View {
         var response: String = ""
         do {
             let prompt = "This is a system Test, respond with exactly \"Success\" without the \"'s to indicate that no issues occured."
-            let testModel = GenerativeModel(name: model.id, apiKey: key)
-            for try await chunk in testModel.generateContentStream(prompt) {
+            let testModel = GenerativeModel(name: model.id, apiKey: key, systemInstruction: prompt)
+            for try await chunk in testModel.generateContentStream("Respond to the latest User Message as Described in the System Prompt.") {
                 let newText = chunk.text ?? ""
                 DispatchQueue.main.async {
                     response += newText
@@ -589,17 +630,21 @@ struct Message: View, Identifiable, Equatable, Codable {
                     .colorScheme(.dark)
                     .foregroundStyle(.white)
                     .padding(7.5)
+                    .padding(.horizontal, 5)
+                    .padding(.trailing, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15)
+                        BubbleShape(rightAligned: true)
                             .foregroundStyle(Color.accentColor)
                     )
             } else {
                 Markdown(message)
                     .contentTransition(.numericText(countsDown: false))
                     .padding(7.5)
+                    .padding(.horizontal, 5)
+                    .padding(.leading, 5)
                     .background(
-                        RoundedRectangle(cornerRadius: 15)
-                            .foregroundStyle(Color.gray.opacity(0.25))
+                        BubbleShape(rightAligned: false)
+                            .foregroundStyle(.thinMaterial)
                     )
                 Spacer()
             }
