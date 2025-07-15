@@ -2,17 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>com.apple.developer.associated-domains</key>
+	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>
-		<string>appclips:timi2506.is-a.dev</string>
+		<string>$(AppIdentifierPrefix)com.timi2506.Gemini</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.timi2506.Gemini</string>
-	</array>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)com.timi2506.Gemini</string>
 	</array>
 </dict>
 </plist>

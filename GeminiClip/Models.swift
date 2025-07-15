@@ -3,7 +3,7 @@ import Foundation
 import GoogleGenerativeAI
 import Foundation
 import Combine
-import AsyncButton 
+import AsyncButton
 import FoundationModels
 
 class GeminiModelStore: ObservableObject {
@@ -122,119 +122,105 @@ struct AddKeyView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                VStack {
-                    Text("Welcome!")
-                        .fontDesign(.rounded)
-                        .font(.title)
-                    Text("To use this App, you need to provide your Gemini API Key.")
-                        .fontDesign(.rounded)
-                        .foregroundStyle(.gray)
-                        .multilineTextAlignment(.center)
-                    Text("[How?](https://github.com/timi2506/wsf-md-guides/blob/1fcab31cea13cb0d7156a50d013e46d4d265404b/README.md)")
-                        .fontDesign(.rounded)
-                        .foregroundStyle(.gray)
-                        .multilineTextAlignment(.center)
-                }
-                .bold()
-                .ignoresSafeArea(edges: .top)
-                .padding()
-                Spacer()
+                Text("Welcome!")
+                    .fontDesign(.rounded)
+                    .font(.title)
+                    .bold()
+                Text("To use this App, you need to provide your Gemini API Key.\n\n [How?](https://github.com/timi2506/wsf-md-guides/blob/1fcab31cea13cb0d7156a50d013e46d4d265404b/README.md)")
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+            }
+            .padding()
+            Form {
                 TextField("API Key", text: $newApiKey)
-                    .padding(10)
-                    .background(
-                        Capsule().foregroundStyle(.ultraThinMaterial)
-                    )
-                    .padding()
-                if intelligenceAvailable {
-                    Button("Skip for now") {
-                        dismiss.callAsFunction()
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(.tint)
+            }
+            if intelligenceAvailable {
+                Button("Skip for now") {
+                    dismiss.callAsFunction()
                 }
-                NavigationLink(destination: {
-                    Text("Validate your Key")
-                        .fontDesign(.rounded)
-                        .font(.title)
-                        .bold()
-                    Text("Next, we have to validate your API Key to check which Models it works with")
-                        .fontDesign(.rounded)
-                        .foregroundStyle(.gray)
-                        .multilineTextAlignment(.center)
-                    AsyncButton("Run Test", "play.fill", cancellationMessage: "This will stop the Test and might stop you from proceeding") {
-                        testResults = []
-                        await testAPIkey(key: newApiKey, results: $testResults, testing: $testing)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    List {
-                        if testResults.isEmpty {
-                            Text("This Test will Test each Model supported by this App, if at least one is supported you can continue, please make sure to only use Models supported by your API Key")
-                                .font(.caption)
-                                .foregroundStyle(.gray)
-                        } else {
-                            Section("Test Results - Pull to Refresh") {
-                                ForEach(testResults) { result in
-                                    if result.result == .error {
-                                        HStack {
-                                            Image(systemName: "xmark")
-                                            VStack(alignment: .leading) {
-                                                Text(result.name)
-                                                Text(result.id)
-                                                    .foregroundStyle(.secondary)
-                                            }
+                .buttonStyle(.plain)
+                .foregroundStyle(.tint)
+            }
+            NavigationLink(destination: {
+                Text("Validate your Key")
+                    .fontDesign(.rounded)
+                    .font(.title)
+                    .bold()
+                Text("Next, we have to validate your API Key to check which Models it works with")
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+                AsyncButton("Run Test", "play.fill", cancellationMessage: "This will stop the Test and might stop you from proceeding") {
+                    testResults = []
+                    await testAPIkey(key: newApiKey, results: $testResults, testing: $testing)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                List {
+                    if testResults.isEmpty {
+                        Text("This Test will Test each Model supported by this App, if at least one is supported you can continue, please make sure to only use Models supported by your API Key")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                    } else {
+                        Section("Test Results - Pull to Refresh") {
+                            ForEach(testResults) { result in
+                                if result.result == .error {
+                                    HStack {
+                                        Image(systemName: "xmark")
+                                        VStack(alignment: .leading) {
+                                            Text(result.name)
+                                            Text(result.id)
+                                                .foregroundStyle(.secondary)
                                         }
-                                        .foregroundStyle(.red)
-                                    } else if result.result == .success {
-                                        HStack {
-                                            Image(systemName: "checkmark")
-                                            VStack(alignment: .leading) {
-                                                Text(result.name)
-                                                Text(result.id)
-                                                    .foregroundStyle(.secondary)
-                                            }
-                                        }
-                                        .foregroundStyle(.green)
                                     }
+                                    .foregroundStyle(.red)
+                                } else if result.result == .success {
+                                    HStack {
+                                        Image(systemName: "checkmark")
+                                        VStack(alignment: .leading) {
+                                            Text(result.name)
+                                            Text(result.id)
+                                                .foregroundStyle(.secondary)
+                                        }
+                                    }
+                                    .foregroundStyle(.green)
                                 }
                             }
                         }
                     }
-                    .listStyle(.inset)
-                    .refreshable {
-                        testResults = []
-                        await testAPIkey(key: newApiKey, results: $testResults, testing: $testing)
-                    }
-                    Spacer()
-                    Button(action: {
-                        dismiss.callAsFunction()
-                        apiKey = newApiKey
-                    }) {
-                        Text("Add API Key")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                            .padding()
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                            .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .foregroundStyle(.tint))
-                            .padding(.bottom)
-                    }
-                    .disabled(noSuccesses)
-                    .padding()
+                }
+                .refreshable {
+                    testResults = []
+                    await testAPIkey(key: newApiKey, results: $testResults, testing: $testing)
+                }
+                Spacer()
+                Button(action: {
+                    dismiss.callAsFunction()
+                    apiKey = newApiKey
                 }) {
-                    Text("Continue")
+                    Text("Add API Key")
                         .foregroundColor(.white)
                         .font(.headline)
                         .padding()
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .foregroundStyle(.tint)
-                        )
+                        .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .fill(Color.accentColor))
                         .padding(.bottom)
                 }
+                .disabled(noSuccesses)
                 .padding()
+            }) {
+                Text("Continue")
+                    .foregroundColor(.white)
+                    .font(.headline)
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                    .background(RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(Color.accentColor))
+                    .padding(.bottom)
             }
+            .padding()
         }
         .onChange(of: testing) {
             if testing {
@@ -248,7 +234,7 @@ struct AddKeyView: View {
             }
         }
         .onChange(of: newApiKey) {
-            testResults = []    
+            testResults = []
         }
     }
 }
@@ -275,7 +261,7 @@ func streamTestResponse(key: String, model: GeminiModel) async -> ModeltestResul
     }
 }
 func testAPIkey(key: String, results: Binding<[ModeltestResult]>, testing: Binding<Bool>) async {
-    var modelStore = GeminiModelStore()
+     @StateObject var modelStore = GeminiModelStore()
     testing.wrappedValue = true
     for modelItem in modelStore.models {
         if modelItem.id != "apple-intelligence" {

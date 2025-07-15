@@ -37,19 +37,6 @@ struct ContentView: View {
     @AppStorage("selectedWallpaper", store: UserDefaults(suiteName: "group.timi2506.Gemini")) var selectedWallpaperID: String = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
     @StateObject var themeManager = ThemeManager.shared
     @State var showThemePicker = false
-    @State var errorDialogue: ErrorAlert? {
-        didSet {
-            if let errorDialogue {
-                showUIKitAlert(
-                    title: errorDialogue.title,
-                    message: errorDialogue.description,
-                    buttonText: errorDialogue.buttonText
-                ) {
-                    self.errorDialogue = nil
-                }
-            }
-        }
-    }
     
     var body: some View {
         VStack {
@@ -155,24 +142,11 @@ struct ContentView: View {
                                     .bold()
                             }
                             .padding(7.5)
-                            .foregroundStyle(formal ? Color.white : Color.primary)
-                            .background {
-                                if formal {
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .foregroundStyle(.tint)
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(.gray.opacity(0.10))
-                                        }
-                                } else {
-                                    RoundedRectangle(cornerRadius: 25)
-                                        .foregroundStyle(.gray.opacity(0.25))
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 25)
-                                                .stroke(.gray.opacity(0.5))
-                                        }
-                                }
-                            }
+                            .foregroundStyle(formal ? Color.accentColor : Color(uiColor: .label))
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .foregroundStyle(formal ? .accentColor.opacity(0.25) : Color.gray.opacity(0.25))
+                            )
                         }
                         .buttonStyle(.plain)
                         Spacer()
@@ -186,10 +160,8 @@ struct ContentView: View {
                                     Circle().foregroundStyle(.tint)
                                 )
                         }) {
-                            focused = false
                             var message: String = ""
                             message = self.message
-                            self.message = ""
                             generationStatus = .generating
                             appendMessage(message, user: true)
                             wipResponse = ""
@@ -202,10 +174,12 @@ struct ContentView: View {
                                 appendMessage(wipResponse ?? "Unknown Response", user: false)
                                 wipResponse = nil
                                 generationStatus = .ready
+                                if message == self.message {
+                                    self.message = ""
+                                }
                             }
                         }
                         .buttonStyle(.plain)
-                        .clipShape(.circle)
                         .disabled(generationStatus != .generating ? message.isEmpty : false)
                     }
                 }
@@ -246,17 +220,16 @@ struct ContentView: View {
                     }) {
                         Image(systemName: "clock")
                     }
-                    .foregroundStyle(Color(uiColor: .label))
                 }
                 ToolbarItem(placement: .title) {
                     Menu(content: {
+                        GeminiPicker(selection: $selectedModel)
                         Button("Settings", systemImage: "gear") {
                             settings.toggle()
                         }
-                        Button("Customization", systemImage: "paintpalette") {
+                        Button("Wallpaper", systemImage: "paintpalette") {
                             showThemePicker = true
                         }
-                        GeminiPicker(selection: $selectedModel)
                     }) {
                         HStack {
                             VStack(alignment: .center) {
@@ -272,20 +245,12 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .foregroundStyle(Color(uiColor: .label))
-                    .background {
-                        Rectangle()
-                            .foregroundStyle(.background)
-                            .blur(radius: 15)
-                    }
                     .popoverTip(
                         TipStruct(title: Text("Settings has moved"), message: Text("Settings and the Model Picker are now found in the Title Menu"), image: Image(systemName: "gear"))
                     )
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     ShareLink("Share Messages", item: shareMessages(chatSaves.messages))
-                        .buttonStyle(.plain)
-                        .foregroundStyle(Color(uiColor: .label))
                         .disabled(chatSaves.messages.isEmpty)
                 }
             }
@@ -319,6 +284,7 @@ struct ContentView: View {
                 await MainActor.run {
                     message += "\n\n" + newText
                     dismissInsertingAlert(hudWindow) {
+                        
                         code = ""
                     }
                 }
@@ -332,7 +298,7 @@ struct ContentView: View {
                 ChatHistoryView()
             }
             .fullScreenCover(isPresented: $showThemePicker) {
-                CustomizationView()
+                WallpaperPicker()
                     .presentationBackground(.regularMaterial)
             }
             .onChange(of: selectedModel) {
@@ -362,8 +328,6 @@ struct ContentView: View {
                     model = GenerativeModel(name: selectedModel.id, apiKey: apiKey)
                 }
             }
-            .onOpenURL(perform: handleIncomingURL)
-            
     }
     @State var newModelName = ""
     @State var newModelID = ""
@@ -374,6 +338,17 @@ struct ContentView: View {
     @AppStorage("com.apple.SwiftUI.DisableSolarium", store: UserDefaults(suiteName: "group.timi2506.Gemini")) var liquidGlassOff = false
     var settingsView: some View {
         NavigationStack {
+            VStack {
+                Text("Settings")
+                    .fontDesign(.rounded)
+                    .font(.title)
+                    .bold()
+                Text("Configure Gemini the way you like!")
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+            .padding()
             Form {
                 VStack(alignment: .leading) {
                     Toggle("Disable Liquid Glass", isOn: $liquidGlassOff)
@@ -473,35 +448,16 @@ struct ContentView: View {
                     .disabled(modelStore.models.contains(where: { $0.id == "apple-intelligence" }) || !intelligenceAvailable)
                 }
                 Section {
-                    NavigationLink(destination: {
-                        AdvancedView()
-                    }) {
-                        VStack(alignment: .leading) {
-                            Text("Version: \(version ?? "Unknown")")
-                            Text("Build: \(build ?? "Unknown")")
-                                .foregroundStyle(.secondary)
-                                .font(.caption)
-                        }
-                    }
-                    .navigationLinkIndicatorVisibility(.hidden)
-                }
-            }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .title) {
-                    VStack {
-                        Text("Settings")
-                            .fontDesign(.rounded)
-                            .font(.title)
-                            .bold()
-                        Text("Configure Gemini the way you like!")
-                            .fontDesign(.rounded)
+                    VStack(alignment: .leading) {
+                        Text("Version: \(version ?? "Unknown")")
+                        Text("Build: \(build ?? "Unknown")")
                             .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
+                            .font(.caption)
                     }
-                    .padding()
                 }
+//                Section("Credits") {
+//                    uefuwefwefewf
+//                }
             }
         }
     }
@@ -631,58 +587,9 @@ struct ContentView: View {
         }
         return "None?"
     }
-    func handleIncomingURL(_ url: URL) {
-        guard url.scheme == "gchat" else {
-            print("Wrong URL Scheme")
-            return
-        }
-        
-        switch url.host() {
-        case "selectModel":
-            handleSelectModel(url)
-        default:
-            print("Unsupported Host")
-        }
-    }
-    
-    func handleSelectModel(_ url: URL) {
-        var name = ""
-        var id = ""
-        let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        if let queryItems = components?.queryItems {
-            for item in queryItems {
-                if item.name == "name" {
-                    name = item.value ?? ""
-                } else if item.name == "id" {
-                    id = item.value ?? ""
-                }
-            }
-        }
-        let model = GeminiModel(name: name, id: id)
-        if modelStore.models.contains(model) {
-            selectedModel = model
-        } else {
-            errorDialogue = ErrorAlert(title: "Error Selecting Model", description: "This Model is not yet in the Model Store, you have to add and verify it in Settings first before selecting it from a Widget or URL.")
-        }
-    }
-    func showUIKitAlert(title: String, message: String, buttonText: String? = nil, action: @escaping () -> Void) {
-        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
-        
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: buttonText ?? "OK", style: .default) { _ in
-            action()
-        })
-        
-        rootVC.present(alert, animated: true)
-    }
 }
 
-struct ErrorAlert: Identifiable {
-    var id = UUID()
-    var title: String
-    var description: String
-    var buttonText: String?
-}
+import SwiftUI
 
 enum GenerationStatus {
     case generating
@@ -712,7 +619,7 @@ func shareMessages(_ messages: [Message]) -> String {
         let userString = message.user ? "User" : "Gemini"
         let messageString = "**\(userString):** \(message.message)"
         messagesStrings.append(messageString)
-    } 
+    }
     let finishedString = messagesStrings.joined(separator: "\n\n")
     return finishedString
 }
@@ -733,7 +640,7 @@ struct Message: View, Identifiable, Equatable, Codable {
                     .padding(.trailing, 5)
                     .background(
                         BubbleShape(rightAligned: true)
-                            .foregroundStyle(.tint)
+                            .foregroundStyle(Color.accentColor)
                     )
             } else {
                 Markdown(message)
@@ -824,14 +731,4 @@ extension View {
         }
     }
 
-}
-
-extension UIApplication {
-    var keyWindow: UIWindow? {
-        // Compatible with iOS 13+
-        connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-    }
 }

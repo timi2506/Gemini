@@ -13,8 +13,6 @@ class ThemeManager: ObservableObject {
     }
     static let shared = ThemeManager()
     
-    @AppStorage("accentColor") var accentColor: Color = .orange
-    
     @Published var wallpapers: [Wallpaper]
     
     static var baseApplicationSupportDirectory: URL {
@@ -145,7 +143,7 @@ extension URL {
 import PhotosUI
 import NotchMyProblem
 
-struct CustomizationView: View {
+struct WallpaperPicker: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var manager = ThemeManager.shared
     var screenScale: CGRect {
@@ -170,7 +168,6 @@ struct CustomizationView: View {
         }) { wall in
             WallpaperPreviewView(wall: wall, imageData: $imageData)
         }
-        .colorSheet(isPresented: $accentColorPicker, color: $manager.accentColor)
         .onChange(of: pickerItem) {
             if let item = pickerItem {
                 Task {
@@ -190,7 +187,6 @@ struct CustomizationView: View {
         }
     }
     @State var renameSheet = false
-    @State var accentColorPicker = false
     func wallpaperPickerView(for wallpaper: Wallpaper) -> some View {
         let binding = Binding(
             get: { return manager.wallpapers.first(where: { $0.id == wallpaper.id })!
@@ -269,36 +265,15 @@ struct CustomizationView: View {
                 })
                 Spacer()
                 HStack {
-                    Button(action: {
-                        accentColorPicker = true
-                    }) {
-                        Image(systemName: "swatchpalette.fill")
+                    PhotosPicker(selection: $pickerItem, matching: .images) {
+                        Image(systemName: "plus")
                             .resizable()
                             .bold()
                             .scaledToFit()
                             .frame(height: 17.5)
-                            .padding(5)
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    Spacer()
-                    PhotosPicker(selection: $pickerItem, matching: .images) {
-                        HStack {
-//                            Image(systemName: "plus")
-//                                .resizable()
-//                                .bold()
-//                                .scaledToFit()
-                            Spacer()
-                            Text("Add")
-                                .bold()
-                            Spacer()
-                        }
-                        .frame(height: 17.5)
-                        .padding(5)
                     }
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
-                    Spacer()
                     Button(action: {
                         manager.removeWallpaper(for: wallpaper.id)
                     }){
@@ -306,12 +281,11 @@ struct CustomizationView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 17.5)
-                            .padding(5)
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
                 }
-                .padding(.horizontal, 25)
+                
             }
         }
     }
@@ -364,34 +338,17 @@ struct CustomizationView: View {
                 }
                 Spacer()
                 HStack {
-                    Button(action: {
-                        accentColorPicker = true
-                    }) {
-                        Image(systemName: "swatchpalette.fill")
+                    PhotosPicker(selection: $pickerItem){
+                        Image(systemName: "plus")
                             .resizable()
                             .bold()
                             .scaledToFit()
                             .frame(height: 17.5)
-                            .padding(5)
-                    }
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    Spacer()
-                    PhotosPicker(selection: $pickerItem, matching: .images) {
-                        HStack {
-                            Spacer()
-                            Text("Add")
-                                .bold()
-                            Spacer()
-                        }
-                        .frame(height: 17.5)
-                        .padding(5)
                     }
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.capsule)
-                    Spacer()
                 }
-                .padding(.horizontal, 25)
+                
             }
         }
     }
@@ -434,6 +391,10 @@ struct WallpaperPreviewView: View {
 struct PickedWallpaperData: Identifiable {
     let id = UUID()
     var data: Data
+}
+
+#Preview {
+    WallpaperPicker()
 }
 
 extension Wallpaper {

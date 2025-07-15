@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 import Combine
-import UniformTypeIdentifiers
 
 struct Saves: Codable, Identifiable, Equatable {
     var id = UUID()
@@ -20,7 +19,6 @@ class ChatSaves: ObservableObject {
     func saveLatest() {
         do {
             let encoded = try encoder.encode(messages)
-            try? encoded.write(to: ChatSaves.saveLocation.appendingPathComponent("LatestChat", conformingTo: .json), options: .atomic)
             latestChatData = encoded
         } catch {
             print(error.localizedDescription)
@@ -28,15 +26,9 @@ class ChatSaves: ObservableObject {
     }
     func loadLatest() {
         do {
-            do {
-                let fileData = try Data(contentsOf: ChatSaves.saveLocation.appendingPathComponent("LatestChat", conformingTo: .json))
-                let decoded = try decoder.decode([Message].self, from: fileData)
+            if latestChatData != Data() {
+                let decoded = try decoder.decode([Message].self, from: latestChatData)
                 messages = decoded
-            } catch {
-                if latestChatData != Data() {
-                    let decoded = try decoder.decode([Message].self, from: latestChatData)
-                    messages = decoded
-                }
             }
         } catch {
             print(error.localizedDescription)
@@ -53,7 +45,6 @@ class ChatSaves: ObservableObject {
     func saveHistory() {
         do {
             let encoded = try encoder.encode(chatHistory)
-            try? encoded.write(to: ChatSaves.saveLocation.appendingPathComponent("ChatHistory", conformingTo: .json), options: .atomic)
             chatHistoryData = encoded
         } catch {
             print(error.localizedDescription)
@@ -61,26 +52,8 @@ class ChatSaves: ObservableObject {
     }
     func loadHistory() {
         do {
-            do {
-                let fileData = try Data(contentsOf: ChatSaves.saveLocation.appendingPathComponent("ChatHistory", conformingTo: .json))
-                let decoded = try decoder.decode([Saves].self, from: fileData)
-                chatHistory = decoded
-            } catch {
-                let decoded = try decoder.decode([Saves].self, from: chatHistoryData)
-                chatHistory = decoded
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
-    static var saveLocation: URL {
-        (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.timi2506.Gemini") ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!).appendingPathComponent("ChatSaves", conformingTo: .folder)
-    }
-    func checkAndCreateFolders() {
-        do {
-            if !FileManager.default.fileExists(atPath: ChatSaves.saveLocation.path()) {
-                try FileManager.default.createDirectory(at: ChatSaves.saveLocation, withIntermediateDirectories: true)
-            }
+            let decoded = try decoder.decode([Saves].self, from: chatHistoryData)
+            chatHistory = decoded
         } catch {
             print(error.localizedDescription)
         }
@@ -92,13 +65,24 @@ struct ChatHistoryView: View {
     @State var newSaveName = ""
     var body: some View {
         NavigationStack {
+            VStack {
+                Text("History")
+                    .fontDesign(.rounded)
+                    .font(.title)
+                    .bold()
+                Text("Save or Restore Chats")
+                    .fontDesign(.rounded)
+                    .foregroundStyle(.gray)
+                    .multilineTextAlignment(.center)
+            }
+            .padding()
             List {
                 Section("Current Chat") {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("Latest Chat")
                             Text("\(chatSaves.messages.count.description) Messages")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.gray)
                                 .font(.caption)
                         }
                         Spacer()
@@ -111,7 +95,7 @@ struct ChatHistoryView: View {
                                         .bold()
                                     Text("To Save this Chat, please give it a name and then hit Save")
                                         .fontDesign(.rounded)
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.gray)
                                         .multilineTextAlignment(.center)
                                 }
                                 .padding()
@@ -129,15 +113,13 @@ struct ChatHistoryView: View {
                     Section("Saved Chats") {
                         if chatSaves.chatHistory.isEmpty {
                             Text("No Chats saved yet, try saving the Latest Chat!")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
                         }
                         ForEach(chatSaves.chatHistory) { historyItem in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text(historyItem.title)
                                     Text("\(historyItem.messages.count.description) Messages")
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.gray)
                                         .font(.caption)
                                 }
                                 Spacer()
@@ -149,21 +131,6 @@ struct ChatHistoryView: View {
                         .onDelete(perform: chatSaves.removeFromHistory)
                     }
                 }
-            .toolbar {
-                ToolbarItem(placement: .title) {
-                    VStack {
-                        Text("History")
-                            .fontDesign(.rounded)
-                            .font(.title)
-                            .bold()
-                        Text("Save or Restore Chats")
-                            .fontDesign(.rounded)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding()
-                }
-            }
         }
         .onChange(of: chatSaves.chatHistory) { 
             chatSaves.saveHistory()

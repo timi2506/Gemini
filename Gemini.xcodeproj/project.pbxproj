@@ -12,31 +12,147 @@
 		8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D01030D2E1D058D003BE02C /* KeychainSwift */; };
 		8D0103112E1D05C4003BE02C /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103102E1D05C4003BE02C /* CodeEditor */; };
 		8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */ = {isa = PBXBuildFile; productRef = 8D0103132E1D05D8003BE02C /* AsyncButton */; };
+		8D2896292E24F5A600677E64 /* GeminiStickers.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8D2896222E24F5A300677E64 /* GeminiStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8D2896332E250C5D00677E64 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6567CF2E23F7A100D1A040 /* WidgetKit.framework */; };
+		8D2896342E250C5D00677E64 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6567D12E23F7A200D1A040 /* SwiftUI.framework */; };
+		8D2896412E250C6000677E64 /* GeminiWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8D2896322E250C5D00677E64 /* GeminiWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D38F0C82E1E76BC00E20122 /* MarkdownUI */; };
+		8D6566FC2E23D84400D1A040 /* GeminiClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 8D6566F02E23D84200D1A040 /* GeminiClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8D6567172E23D9B700D1A040 /* AsyncButton in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567162E23D9B700D1A040 /* AsyncButton */; };
+		8D6567192E23D9C200D1A040 /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567182E23D9C200D1A040 /* CodeEditor */; };
+		8D65671B2E23D9C700D1A040 /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D65671A2E23D9C700D1A040 /* GoogleGenerativeAI */; };
+		8D65671D2E23D9CD00D1A040 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8D65671C2E23D9CD00D1A040 /* KeychainSwift */; };
+		8D65671F2E23D9D400D1A040 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D65671E2E23D9D400D1A040 /* MarkdownUI */; };
+		8D6567212E23D9DB00D1A040 /* MarkdownWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567202E23D9DB00D1A040 /* MarkdownWebView */; };
+		8D6567232E23D9E000D1A040 /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567222E23D9E000D1A040 /* NotchMyProblem */; };
+		8D6567252E23D9E600D1A040 /* SwiftyCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567242E23D9E600D1A040 /* SwiftyCrop */; };
+		8D6B549F2E22F1C800FC103A /* SwiftyCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6B549E2E22F1C800FC103A /* SwiftyCrop */; };
 		8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D9E841E2E2298A100CF39D1 /* NotchMyProblem */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		8D2896272E24F5A600677E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8D0102DA2E1D03F1003BE02C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D2896212E24F5A300677E64;
+			remoteInfo = GeminiStickers;
+		};
+		8D28963F2E250C6000677E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8D0102DA2E1D03F1003BE02C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D2896312E250C5D00677E64;
+			remoteInfo = GeminiWidgetExtension;
+		};
+		8D6566FA2E23D84400D1A040 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8D0102DA2E1D03F1003BE02C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D6566EF2E23D84200D1A040;
+			remoteInfo = GeminiClip;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8D6566C92E23D71A00D1A040 /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+				8D6566FC2E23D84400D1A040 /* GeminiClip.app in Embed App Clips */,
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D6567E02E23F7A400D1A040 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8D2896292E24F5A600677E64 /* GeminiStickers.appex in Embed Foundation Extensions */,
+				8D2896412E250C6000677E64 /* GeminiWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		8D0102E22E1D03F1003BE02C /* Gemini.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gemini.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D2895D92E24EED100677E64 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
+		8D2895EE2E24EF2E00677E64 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		8D2896222E24F5A300677E64 /* GeminiStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeminiStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D2896322E250C5D00677E64 /* GeminiWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GeminiWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D6566F02E23D84200D1A040 /* GeminiClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeminiClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D6567CF2E23F7A100D1A040 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		8D6567D12E23F7A200D1A040 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8D49CC482E1ED9A70092D651 /* Exceptions for "Gemini" folder in "Gemini" target */ = {
+		8D2895CF2E24045A00677E64 /* Exceptions for "Gemini" folder in "Gemini" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = 8D0102E12E1D03F1003BE02C /* Gemini */;
 		};
+		8D28962D2E24F5A600677E64 /* Exceptions for "GeminiStickers" folder in "GeminiStickers" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8D2896212E24F5A300677E64 /* GeminiStickers */;
+		};
+		8D2896452E250C6000677E64 /* Exceptions for "GeminiWidget" folder in "GeminiWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8D2896312E250C5D00677E64 /* GeminiWidgetExtension */;
+		};
+		8D6567002E23D84400D1A040 /* Exceptions for "GeminiClip" folder in "GeminiClip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 8D6566EF2E23D84200D1A040 /* GeminiClip */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		8D0102E42E1D03F1003BE02C /* Gemini */ = {
+		8D2895C12E24045A00677E64 /* Gemini */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8D49CC482E1ED9A70092D651 /* Exceptions for "Gemini" folder in "Gemini" target */,
+				8D2895CF2E24045A00677E64 /* Exceptions for "Gemini" folder in "Gemini" target */,
 			);
 			path = Gemini;
+			sourceTree = "<group>";
+		};
+		8D2896232E24F5A300677E64 /* GeminiStickers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8D28962D2E24F5A600677E64 /* Exceptions for "GeminiStickers" folder in "GeminiStickers" target */,
+			);
+			path = GeminiStickers;
+			sourceTree = "<group>";
+		};
+		8D2896352E250C5D00677E64 /* GeminiWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8D2896452E250C6000677E64 /* Exceptions for "GeminiWidget" folder in "GeminiWidgetExtension" target */,
+			);
+			path = GeminiWidget;
+			sourceTree = "<group>";
+		};
+		8D6566F12E23D84200D1A040 /* GeminiClip */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8D6567002E23D84400D1A040 /* Exceptions for "GeminiClip" folder in "GeminiClip" target */,
+			);
+			path = GeminiClip;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -50,9 +166,34 @@
 				8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */,
 				8D0103082E1D0563003BE02C /* GoogleGenerativeAI in Frameworks */,
 				8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */,
+				8D6B549F2E22F1C800FC103A /* SwiftyCrop in Frameworks */,
 				8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */,
 				8D01030B2E1D0577003BE02C /* MarkdownWebView in Frameworks */,
 				8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D28962F2E250C5D00677E64 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D2896342E250C5D00677E64 /* SwiftUI.framework in Frameworks */,
+				8D2896332E250C5D00677E64 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D6566ED2E23D84200D1A040 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D65671B2E23D9C700D1A040 /* GoogleGenerativeAI in Frameworks */,
+				8D6567192E23D9C200D1A040 /* CodeEditor in Frameworks */,
+				8D65671D2E23D9CD00D1A040 /* KeychainSwift in Frameworks */,
+				8D6567212E23D9DB00D1A040 /* MarkdownWebView in Frameworks */,
+				8D6567252E23D9E600D1A040 /* SwiftyCrop in Frameworks */,
+				8D6567232E23D9E000D1A040 /* NotchMyProblem in Frameworks */,
+				8D6567172E23D9B700D1A040 /* AsyncButton in Frameworks */,
+				8D65671F2E23D9D400D1A040 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +203,11 @@
 		8D0102D92E1D03F1003BE02C = {
 			isa = PBXGroup;
 			children = (
-				8D0102E42E1D03F1003BE02C /* Gemini */,
+				8D2895C12E24045A00677E64 /* Gemini */,
+				8D6566F12E23D84200D1A040 /* GeminiClip */,
+				8D2896232E24F5A300677E64 /* GeminiStickers */,
+				8D2896352E250C5D00677E64 /* GeminiWidget */,
+				8D6567152E23D9B700D1A040 /* Frameworks */,
 				8D0102E32E1D03F1003BE02C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -71,8 +216,22 @@
 			isa = PBXGroup;
 			children = (
 				8D0102E22E1D03F1003BE02C /* Gemini.app */,
+				8D6566F02E23D84200D1A040 /* GeminiClip.app */,
+				8D2896222E24F5A300677E64 /* GeminiStickers.appex */,
+				8D2896322E250C5D00677E64 /* GeminiWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8D6567152E23D9B700D1A040 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8D6567CF2E23F7A100D1A040 /* WidgetKit.framework */,
+				8D6567D12E23F7A200D1A040 /* SwiftUI.framework */,
+				8D2895D92E24EED100677E64 /* IntentsUI.framework */,
+				8D2895EE2E24EF2E00677E64 /* Messages.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,13 +244,18 @@
 				8D0102DE2E1D03F1003BE02C /* Sources */,
 				8D0102DF2E1D03F1003BE02C /* Frameworks */,
 				8D0102E02E1D03F1003BE02C /* Resources */,
+				8D6566C92E23D71A00D1A040 /* Embed App Clips */,
+				8D6567E02E23F7A400D1A040 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8D6566FB2E23D84400D1A040 /* PBXTargetDependency */,
+				8D2896282E24F5A600677E64 /* PBXTargetDependency */,
+				8D2896402E250C6000677E64 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				8D0102E42E1D03F1003BE02C /* Gemini */,
+				8D2895C12E24045A00677E64 /* Gemini */,
 			);
 			name = Gemini;
 			packageProductDependencies = (
@@ -102,10 +266,83 @@
 				8D0103132E1D05D8003BE02C /* AsyncButton */,
 				8D38F0C82E1E76BC00E20122 /* MarkdownUI */,
 				8D9E841E2E2298A100CF39D1 /* NotchMyProblem */,
+				8D6B549E2E22F1C800FC103A /* SwiftyCrop */,
 			);
 			productName = Gemini;
 			productReference = 8D0102E22E1D03F1003BE02C /* Gemini.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8D2896212E24F5A300677E64 /* GeminiStickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D28962A2E24F5A600677E64 /* Build configuration list for PBXNativeTarget "GeminiStickers" */;
+			buildPhases = (
+				8D2896202E24F5A300677E64 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8D2896232E24F5A300677E64 /* GeminiStickers */,
+			);
+			name = GeminiStickers;
+			packageProductDependencies = (
+			);
+			productName = GeminiStickers;
+			productReference = 8D2896222E24F5A300677E64 /* GeminiStickers.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
+		};
+		8D2896312E250C5D00677E64 /* GeminiWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D2896422E250C6000677E64 /* Build configuration list for PBXNativeTarget "GeminiWidgetExtension" */;
+			buildPhases = (
+				8D28962E2E250C5D00677E64 /* Sources */,
+				8D28962F2E250C5D00677E64 /* Frameworks */,
+				8D2896302E250C5D00677E64 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8D2896352E250C5D00677E64 /* GeminiWidget */,
+			);
+			name = GeminiWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = GeminiWidgetExtension;
+			productReference = 8D2896322E250C5D00677E64 /* GeminiWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		8D6566EF2E23D84200D1A040 /* GeminiClip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D6566FD2E23D84400D1A040 /* Build configuration list for PBXNativeTarget "GeminiClip" */;
+			buildPhases = (
+				8D6566EC2E23D84200D1A040 /* Sources */,
+				8D6566ED2E23D84200D1A040 /* Frameworks */,
+				8D6566EE2E23D84200D1A040 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				8D6566F12E23D84200D1A040 /* GeminiClip */,
+			);
+			name = GeminiClip;
+			packageProductDependencies = (
+				8D6567162E23D9B700D1A040 /* AsyncButton */,
+				8D6567182E23D9C200D1A040 /* CodeEditor */,
+				8D65671A2E23D9C700D1A040 /* GoogleGenerativeAI */,
+				8D65671C2E23D9CD00D1A040 /* KeychainSwift */,
+				8D65671E2E23D9D400D1A040 /* MarkdownUI */,
+				8D6567202E23D9DB00D1A040 /* MarkdownWebView */,
+				8D6567222E23D9E000D1A040 /* NotchMyProblem */,
+				8D6567242E23D9E600D1A040 /* SwiftyCrop */,
+			);
+			productName = GeminiClip;
+			productReference = 8D6566F02E23D84200D1A040 /* GeminiClip.app */;
+			productType = "com.apple.product-type.application.on-demand-install-capable";
 		};
 /* End PBXNativeTarget section */
 
@@ -118,6 +355,15 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					8D0102E12E1D03F1003BE02C = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					8D2896212E24F5A300677E64 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					8D2896312E250C5D00677E64 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					8D6566EF2E23D84200D1A040 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -139,6 +385,7 @@
 				8D0103122E1D05D8003BE02C /* XCRemoteSwiftPackageReference "AsyncButton" */,
 				8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */,
+				8D6B549D2E22F1C800FC103A /* XCRemoteSwiftPackageReference "SwiftyCrop" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8D0102E32E1D03F1003BE02C /* Products */;
@@ -146,12 +393,36 @@
 			projectRoot = "";
 			targets = (
 				8D0102E12E1D03F1003BE02C /* Gemini */,
+				8D6566EF2E23D84200D1A040 /* GeminiClip */,
+				8D2896212E24F5A300677E64 /* GeminiStickers */,
+				8D2896312E250C5D00677E64 /* GeminiWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D0102E02E1D03F1003BE02C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D2896202E24F5A300677E64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D2896302E250C5D00677E64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D6566EE2E23D84200D1A040 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -168,7 +439,39 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8D28962E2E250C5D00677E64 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D6566EC2E23D84200D1A040 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8D2896282E24F5A600677E64 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D2896212E24F5A300677E64 /* GeminiStickers */;
+			targetProxy = 8D2896272E24F5A600677E64 /* PBXContainerItemProxy */;
+		};
+		8D2896402E250C6000677E64 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D2896312E250C5D00677E64 /* GeminiWidgetExtension */;
+			targetProxy = 8D28963F2E250C6000677E64 /* PBXContainerItemProxy */;
+		};
+		8D6566FB2E23D84400D1A040 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D6566EF2E23D84200D1A040 /* GeminiClip */;
+			targetProxy = 8D6566FA2E23D84400D1A040 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8D0102EB2E1D03F3003BE02C /* Debug */ = {
@@ -295,10 +598,13 @@
 		8D0102EE2E1D03F3003BE02C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Gemini/Gemini.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P6PV2R9443;
@@ -328,9 +634,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.0;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -345,10 +653,13 @@
 		8D0102EF2E1D03F3003BE02C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = Gemini/Gemini.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = P6PV2R9443;
@@ -378,12 +689,198 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.0;
+				MARKETING_VERSION = 1.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8D28962B2E24F5A600677E64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiStickers/Info.plist;
+				INFOPLIST_KEY_NSStickerSharingLevel = OS;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.GeminiStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8D28962C2E24F5A600677E64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiStickers/Info.plist;
+				INFOPLIST_KEY_NSStickerSharingLevel = OS;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.GeminiStickers;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8D2896432E250C6000677E64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GeminiWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.GeminiWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8D2896442E250C6000677E64 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = GeminiWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.GeminiWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8D6566FE2E23D84400D1A040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = GeminiClip/GeminiClip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Gemini;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8D6566FF2E23D84400D1A040 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = Gemini;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = GeminiClip/GeminiClip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = P6PV2R9443;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeminiClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Gemini;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.9.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timi2506.Gemini.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
@@ -409,6 +906,33 @@
 			buildConfigurations = (
 				8D0102EE2E1D03F3003BE02C /* Debug */,
 				8D0102EF2E1D03F3003BE02C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D28962A2E24F5A600677E64 /* Build configuration list for PBXNativeTarget "GeminiStickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D28962B2E24F5A600677E64 /* Debug */,
+				8D28962C2E24F5A600677E64 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D2896422E250C6000677E64 /* Build configuration list for PBXNativeTarget "GeminiWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D2896432E250C6000677E64 /* Debug */,
+				8D2896442E250C6000677E64 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8D6566FD2E23D84400D1A040 /* Build configuration list for PBXNativeTarget "GeminiClip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D6566FE2E23D84400D1A040 /* Debug */,
+				8D6566FF2E23D84400D1A040 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -464,6 +988,14 @@
 				minimumVersion = 2.4.1;
 			};
 		};
+		8D6B549D2E22F1C800FC103A /* XCRemoteSwiftPackageReference "SwiftyCrop" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/benedom/SwiftyCrop";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Aeastr/NotchMyProblem";
@@ -504,6 +1036,51 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
 			productName = MarkdownUI;
+		};
+		8D6567162E23D9B700D1A040 /* AsyncButton */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D0103122E1D05D8003BE02C /* XCRemoteSwiftPackageReference "AsyncButton" */;
+			productName = AsyncButton;
+		};
+		8D6567182E23D9C200D1A040 /* CodeEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D01030F2E1D05C4003BE02C /* XCRemoteSwiftPackageReference "CodeEditor" */;
+			productName = CodeEditor;
+		};
+		8D65671A2E23D9C700D1A040 /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D0103062E1D0563003BE02C /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+		8D65671C2E23D9CD00D1A040 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D01030C2E1D058D003BE02C /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+		8D65671E2E23D9D400D1A040 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D38F0C72E1E76BC00E20122 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
+		8D6567202E23D9DB00D1A040 /* MarkdownWebView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D0103092E1D0577003BE02C /* XCRemoteSwiftPackageReference "markdown-webview" */;
+			productName = MarkdownWebView;
+		};
+		8D6567222E23D9E000D1A040 /* NotchMyProblem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D9E841D2E2298A100CF39D1 /* XCRemoteSwiftPackageReference "NotchMyProblem" */;
+			productName = NotchMyProblem;
+		};
+		8D6567242E23D9E600D1A040 /* SwiftyCrop */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D6B549D2E22F1C800FC103A /* XCRemoteSwiftPackageReference "SwiftyCrop" */;
+			productName = SwiftyCrop;
+		};
+		8D6B549E2E22F1C800FC103A /* SwiftyCrop */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8D6B549D2E22F1C800FC103A /* XCRemoteSwiftPackageReference "SwiftyCrop" */;
+			productName = SwiftyCrop;
 		};
 		8D9E841E2E2298A100CF39D1 /* NotchMyProblem */ = {
 			isa = XCSwiftPackageProductDependency;
