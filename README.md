@@ -11,12 +11,14 @@ A SwiftUI Native Chatting App for Chatting with the Gemini Models - built fully 
 - Share your Chat with other People
 - Insert Code in Markdown Code Blocks with a Built in Code Inserter that uses Gemini to automatically choose the correct markdown code block for your code
 - Watch the Response be Generated Live with Gemini's Streamed Response Feature which also allows you to interrupt Gemini when it misunderstood something
-- 
+- Customizable Prompts
+- Custom Wallpapers and Accent Colors
+- Apple Intelligence (On Supported Devices)
+  
 ## Screenshots
-
-![Simulator Screenshot -  iPhone (16) - 2025-06-26 at 13 15 28](https://github.com/user-attachments/assets/e389699a-9897-4cf1-8ea5-4aef06ad5515)
-![Simulator Screenshot -  iPhone (16) - 2025-06-26 at 13 16 31](https://github.com/user-attachments/assets/fbc41f8e-a93c-4704-97f2-3ba95050ba67)
-![Simulator Screenshot -  iPhone (16) - 2025-06-26 at 13 16 51](https://github.com/user-attachments/assets/c7dac0e4-efb8-4a3b-b9bd-d7bf9ce46a2e)
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-07-15 at 20 05 41" src="https://github.com/user-attachments/assets/fa267a7f-81f4-4c3d-b1db-51cc98ea4d92" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-07-15 at 20 06 34" src="https://github.com/user-attachments/assets/76354cda-dccf-4e66-a5a2-95c376ff7bdf" />
+<img width="1179" height="2556" alt="Simulator Screenshot - iPhone 16 - 2025-07-15 at 20 07 17" src="https://github.com/user-attachments/assets/2b004515-7099-41f4-8519-77582496dbca" />
 
 ## Journey
 [1. Discovering the free Gemini API](https://x.com/timi2506/status/1912589142766284870)
