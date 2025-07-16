@@ -17,6 +17,7 @@
 		8D2896342E250C5D00677E64 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6567D12E23F7A200D1A040 /* SwiftUI.framework */; };
 		8D2896412E250C6000677E64 /* GeminiWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8D2896322E250C5D00677E64 /* GeminiWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 8D38F0C82E1E76BC00E20122 /* MarkdownUI */; };
+		8D4A73962E291B2400F464FE /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D9E841E2E2298A100CF39D1 /* NotchMyProblem */; };
 		8D6566FC2E23D84400D1A040 /* GeminiClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 8D6566F02E23D84200D1A040 /* GeminiClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8D6567172E23D9B700D1A040 /* AsyncButton in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567162E23D9B700D1A040 /* AsyncButton */; };
 		8D6567192E23D9C200D1A040 /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567182E23D9C200D1A040 /* CodeEditor */; };
@@ -54,6 +55,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		8D4A73EC2E2927E600F464FE /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D6566C92E23D71A00D1A040 /* Embed App Clips */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -161,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D4A73962E291B2400F464FE /* NotchMyProblem in Frameworks */,
 				8D0103112E1D05C4003BE02C /* CodeEditor in Frameworks */,
 				8D01030E2E1D058D003BE02C /* KeychainSwift in Frameworks */,
 				8D0103082E1D0563003BE02C /* GoogleGenerativeAI in Frameworks */,
@@ -244,6 +256,7 @@
 				8D0102E02E1D03F1003BE02C /* Resources */,
 				8D6566C92E23D71A00D1A040 /* Embed App Clips */,
 				8D6567E02E23F7A400D1A040 /* Embed Foundation Extensions */,
+				8D4A73EC2E2927E600F464FE /* Embed Watch Content */,
 			);
 			buildRules = (
 			);

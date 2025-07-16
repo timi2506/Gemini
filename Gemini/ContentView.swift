@@ -50,7 +50,7 @@ struct ContentView: View {
             }
         }
     }
-    
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack {
             ZStack {
@@ -69,6 +69,7 @@ struct ContentView: View {
                                             UIPasteboard.general.string = messageItem.message
                                         }
                                     }
+                                    .id(messageItem.id)
                             }
                             
                             if let wipResponse {
@@ -239,6 +240,13 @@ struct ContentView: View {
                         Button(action: { showHistory.toggle() }) {
                             Label("History", systemImage: "clock")
                         }
+                        Button(action: {
+                            chatSaves.addToHistory(chatSaves.messages, title: "")
+                            chatSaves.messages = []
+                            chatSaves.latestChatData = Data()
+                        }) {
+                            Label("New Chat", systemImage: "plus")
+                        }
                         Button("Clear Chat", systemImage: "xmark") {
                             chatSaves.messages = []
                             chatSaves.latestChatData = Data()
@@ -329,7 +337,7 @@ struct ContentView: View {
                     .interactiveDismissDisabled(true)
             }
             .sheet(isPresented: $showHistory) {
-                ChatHistoryView()
+                ChatHistoryView(selectedModel: $selectedModel, model: $model)
             }
             .fullScreenCover(isPresented: $showThemePicker) {
                 CustomizationView()
@@ -504,7 +512,7 @@ struct ContentView: View {
                 }
             }
         }
-    }
+     }
     func removeModel(at offsets: IndexSet) {
         modelStore.models.remove(atOffsets: offsets)
     }

@@ -87,13 +87,16 @@ struct AdvancedView: View {
     @State var deleteFileDialogue = false
     
     var body: some View {
-        TabView {
-            folderView.tabItem {
-                Label("Folder", systemImage: "folder")
+        NavigationStack {
+            TabView {
+                folderView.tabItem {
+                    Label("Folder", systemImage: "folder")
+                }
+                dangerousView.tabItem {
+                    Label("Dangerous", systemImage: "exclamationmark.triangle")
+                }
             }
-            dangerousView.tabItem {
-                Label("Dangerous", systemImage: "exclamationmark.triangle")
-            }
+            .navigationTitle("Advanced Options")
         }
     }
     var dangerousView: some View {
@@ -137,7 +140,6 @@ struct AdvancedView: View {
                 restartDialogue()
             }
         }
-        .navigationTitle("DANGEROUS OPTIONS")
     }
     var folderView: some View {
         VStack {
@@ -161,7 +163,6 @@ struct AdvancedView: View {
                 .refreshable(action: { await asyncRefresh() })
             }
         }
-        .navigationTitle("File Browser")
         .safeAreaInset(edge: .top) {
             Picker("Folder", selection: $selectedFolder) {
                 Text("Shared/Default")

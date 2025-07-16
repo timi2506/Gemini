@@ -4,7 +4,7 @@ import TipKit
 import FoundationModels
 
 @main
-struct MyApp: App {
+struct GeminiApp: App {
     @StateObject var themeManager = ThemeManager.shared
     var intelligenceAvailable: Bool {
         if #available(iOS 26.0, *) {
