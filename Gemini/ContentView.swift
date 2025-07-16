@@ -295,7 +295,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $addKey) {
             AddKeyView()
-                .interactiveDismissDisabled(apiKey.isEmpty)
+                .interactiveDismissDisabled(intelligenceAvailable ? false : apiKey.isEmpty)
         }
         .sheet(isPresented: $showCodeEditor, onDismiss: { // early‑exit if empty
             guard !code.isEmpty else { return }
@@ -371,7 +371,7 @@ struct ContentView: View {
     let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
     @StateObject var promptManager = SystemPromptManager.shared
-    @AppStorage("com.apple.SwiftUI.DisableSolarium", store: UserDefaults(suiteName: "group.timi2506.Gemini")) var liquidGlassOff = false
+    @AppStorage("com.apple.SwiftUI.DisableSolarium") var liquidGlassOff = false
     var settingsView: some View {
         NavigationStack {
             Form {
@@ -806,7 +806,7 @@ struct TipStruct: Tip {
 extension View {
     @ViewBuilder
     func thinBackground(_ shape: some Shape = RoundedRectangle(cornerRadius: 25)) -> some View {
-        let disableLiquidGlass = UserDefaults(suiteName: "group.timi2506.Gemini")!.bool(forKey: "com.apple.SwiftUI.DisableSolarium")
+        let disableLiquidGlass = UserDefaults.standard.bool(forKey: "com.apple.SwiftUI.DisableSolarium")
         if #available(iOS 26, *)  {
             if !disableLiquidGlass {
                 self.glassEffect(.regular, in: shape)

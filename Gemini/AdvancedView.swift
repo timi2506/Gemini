@@ -79,7 +79,7 @@ struct FileRowView: View {
 struct AdvancedView: View {
     var sharedFolder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.timi2506.Gemini")
     var appSupportFolder = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-
+    @Environment(\.dismiss) var dismiss
     @State var selectedFolder: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.timi2506.Gemini")
     @State var folderContents: [String]?
     @State var fileToDisplay: URL?
@@ -87,6 +87,59 @@ struct AdvancedView: View {
     @State var deleteFileDialogue = false
     
     var body: some View {
+        TabView {
+            folderView.tabItem {
+                Label("Folder", systemImage: "folder")
+            }
+            dangerousView.tabItem {
+                Label("Dangerous", systemImage: "exclamationmark.triangle")
+            }
+        }
+    }
+    var dangerousView: some View {
+        Form {
+            Button("Reset User Defaults") {
+                if let defaults = UserDefaults(suiteName: "group.timi2506.Gemini") {
+                    for key in defaults.dictionaryRepresentation().keys {
+                        UserDefaults(suiteName: "group.timi2506.Gemini")?.removeObject(forKey: key)
+                    }
+                }
+                for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                    UserDefaults.standard.removeObject(forKey: key)
+                }
+            }
+            Button("Reset App") {
+                if let defaults = UserDefaults(suiteName: "group.timi2506.Gemini") {
+                    for key in defaults.dictionaryRepresentation().keys {
+                        UserDefaults(suiteName: "group.timi2506.Gemini")?.removeObject(forKey: key)
+                    }
+                }
+                for key in UserDefaults.standard.dictionaryRepresentation().keys {
+                    UserDefaults.standard.removeObject(forKey: key)
+                }
+                if let files = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.timi2506.Gemini") {
+                    do {
+                        try FileManager.default.removeItem(at: files)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+                for wallpaper in ThemeManager.shared.wallpapers {
+                    ThemeManager.shared.removeWallpaper(for: wallpaper.id)
+                }
+                ThemeManager.shared.accentColor = .orange
+                ChatSaves.shared.messages = []
+                ChatSaves.shared.chatHistory = []
+                ChatSaves.shared.chatHistoryData = Data()
+                ChatSaves.shared.latestChatData = Data()
+                ChatSaves.shared.saveHistory()
+                ChatSaves.shared.saveLatest()
+                restartDialogue()
+            }
+        }
+        .navigationTitle("DANGEROUS OPTIONS")
+    }
+    var folderView: some View {
         VStack {
             if let folderContents {
                 Form {
@@ -108,7 +161,7 @@ struct AdvancedView: View {
                 .refreshable(action: { await asyncRefresh() })
             }
         }
-        .navigationTitle("Advanced Options")
+        .navigationTitle("File Browser")
         .safeAreaInset(edge: .top) {
             Picker("Folder", selection: $selectedFolder) {
                 Text("Shared/Default")
@@ -153,6 +206,13 @@ struct AdvancedView: View {
     func asyncRefresh() async {
         try? await Task.sleep(for: .seconds(1.5))
         refreshFolderContents()
+    }
+    func restartDialogue() {
+        dismiss()
+        dismiss()
+        guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else { return }
+        let alert = UIAlertController(title: "Restart Required", message: "To finish resetting you need to restart the App by closing it from App Switcher and then re-opening it.", preferredStyle: .alert)
+        rootVC.present(alert, animated: true)
     }
 }
 

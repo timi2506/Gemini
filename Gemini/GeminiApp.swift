@@ -6,8 +6,6 @@ import FoundationModels
 @main
 struct MyApp: App {
     @StateObject var themeManager = ThemeManager.shared
-    @AppStorage("selectedWallpaper", store: UserDefaults(suiteName: "group.timi2506.Gemini")) var selectedWallpaperID: String = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
-
     var intelligenceAvailable: Bool {
         if #available(iOS 26.0, *) {
             return SystemLanguageModel.default.isAvailable

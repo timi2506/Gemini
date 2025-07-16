@@ -143,7 +143,6 @@ extension URL {
 }
 
 import PhotosUI
-import NotchMyProblem
 
 struct CustomizationView: View {
     @Environment(\.dismiss) var dismiss
@@ -154,7 +153,6 @@ struct CustomizationView: View {
     @State var pickerItem: PhotosPickerItem?
     @State var imageData: PickedWallpaperData?
     @AppStorage("selectedWallpaper", store: UserDefaults(suiteName: "group.timi2506.Gemini")) var selectedWallpaperID: String = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"
-    
     var body: some View {
         TabView(selection: $selectedWallpaperID) {
             defaultView

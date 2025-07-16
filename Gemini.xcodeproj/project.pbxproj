@@ -27,7 +27,6 @@
 		8D6567232E23D9E000D1A040 /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567222E23D9E000D1A040 /* NotchMyProblem */; };
 		8D6567252E23D9E600D1A040 /* SwiftyCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6567242E23D9E600D1A040 /* SwiftyCrop */; };
 		8D6B549F2E22F1C800FC103A /* SwiftyCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 8D6B549E2E22F1C800FC103A /* SwiftyCrop */; };
-		8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */ = {isa = PBXBuildFile; productRef = 8D9E841E2E2298A100CF39D1 /* NotchMyProblem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,7 +166,6 @@
 				8D0103082E1D0563003BE02C /* GoogleGenerativeAI in Frameworks */,
 				8D38F0C92E1E76BC00E20122 /* MarkdownUI in Frameworks */,
 				8D6B549F2E22F1C800FC103A /* SwiftyCrop in Frameworks */,
-				8D9E841F2E2298A100CF39D1 /* NotchMyProblem in Frameworks */,
 				8D01030B2E1D0577003BE02C /* MarkdownWebView in Frameworks */,
 				8D0103142E1D05D8003BE02C /* AsyncButton in Frameworks */,
 			);
